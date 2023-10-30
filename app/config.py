@@ -1,5 +1,5 @@
 # MQTT Constants
-BROKER_ADDRESS = "localhost"
+BROKER_ADDRESS = "192.168.1.101"
 DETECTION_TOPIC = "vehicle/detections"
 IMAGE_TOPIC = "vehicle/image"
 #
