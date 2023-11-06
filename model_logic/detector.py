@@ -13,7 +13,7 @@ from app.config import BROKER_ADDRESS, DETECTION_TOPIC, IMAGE_TOPIC
 
 detection_logger = logging.getLogger("detection-logger")
 
-
+# Todo Seperate the mqtt client from the model
 class ObjectDetector(BaseModel):
     last_sent_time = 0
     image_count = 0
