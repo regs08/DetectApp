@@ -26,3 +26,6 @@ if [ ! -f "$FILE" ]; then
 fi
 
 echo -e "Downloaded files are in ${DATA_DIR}"
+
+download mosquito
+sudo apt install -y mosquitto mosquitto-clients
