@@ -7,7 +7,7 @@ import os
 class BaseModel(ABC):
     """A base class for real-time vision model_logic."""
 
-    def __init__(self, model_path, camera_id=0, width=400, height=600, num_threads=1, max_results=3, fps_avg_frame_count=5,
+    def __init__(self, model_path, camera_id=0, width=480, height=640, num_threads=1, max_results=3, fps_avg_frame_count=5,
                  enable_edgetpu=False,  conf_thresh=.5):
         self.enable_edgetpu = enable_edgetpu
         self.max_results = max_results
