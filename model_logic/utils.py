@@ -4,7 +4,7 @@ import supervision as sv
 from tensorflow_lite_support.python.task.processor.proto import bounding_box_pb2
 from datetime import datetime
 import json
-
+from Payload.payload import Payload
 
 def bbox_to_numpy_xyxy(bbox: bounding_box_pb2.BoundingBox):
     # Access the bounding box values from the BoundingBox object
@@ -48,23 +48,25 @@ def extract_payload(bboxes, labels, confs, conf_thresh):
             filename = f"{labels[i]}_{timestamp}.jpg"
 
             xmin, ymin, xmax, ymax = [int(coord) for coord in bboxes[i]]
-            message = {
-                "event": "detection",
-                "label": labels[i],
-                "confidence": conf,
-                "xmin": xmin,
-                "ymin": ymin,
-                "xmax": xmax,
-                "ymax": ymax,
-                "filename": filename,
-                "timestamp": timestamp,
-                "details": "Additional details if required"
-            }
-            payload.append(message)
+
+            data = Payload(
+                entry='log',
+                event='detection',
+                label=labels[i],
+                confidence=conf,
+                xmin=xmin,
+                ymin=ymin,
+                xmax=xmax,
+                ymax=ymax,
+                filename=filename,
+                timestamp=timestamp
+            )
+
+            payload.append(data)
     if payload:
         print(payload)
-
-        payload_json = json.dumps(payload)
+        payload_dicts =[p.to_dict() for p in payload]
+        payload_json = json.dumps(payload_dicts)
 
         return payload_json
     return None

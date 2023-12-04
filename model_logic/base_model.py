@@ -2,13 +2,15 @@ from abc import ABC, abstractmethod
 import cv2
 import time
 import os
+import threading
 
+from MqttClient.my_mqtt_client import MQTTClient
 
 class BaseModel(ABC):
     """A base class for real-time vision model_logic."""
 
-    def __init__(self, model_path, camera_id=0, width=480, height=640, num_threads=1, max_results=3, fps_avg_frame_count=5,
-                 enable_edgetpu=False,  conf_thresh=.5):
+    def __init__(self, model_path, mqtt_client=MQTTClient(), camera_id=0, width=480, height=640, num_threads=1, max_results=3, fps_avg_frame_count=5,
+                 enable_edgetpu=False,  conf_thresh=.5, ):
         self.enable_edgetpu = enable_edgetpu
         self.max_results = max_results
         self.model_path = model_path
@@ -25,6 +27,11 @@ class BaseModel(ABC):
         self.current_time = time.time()
         self.save_dir = os.getcwd()
         self.conf_thresh = conf_thresh
+        self.mqtt_client = mqtt_client
+
+        self.mqtt_thread = threading.Thread(target=self.mqtt_client.start_loop)
+        self.mqtt_thread.start()
+
     @abstractmethod
     def initialize_model(self):
         """Initialize the model. Must be overridden by subclasses."""
@@ -62,4 +69,6 @@ class BaseModel(ABC):
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + encoded_frame + b'\r\n')
 
-
+    def stop_mqtt(self):
+        self.mqtt_client.stop_loop()
+        self.mqtt_thread.join()

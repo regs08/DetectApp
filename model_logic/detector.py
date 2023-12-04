@@ -2,13 +2,9 @@ import cv2
 from model_logic import utils
 from tflite_support.task import core, processor, vision
 from model_logic.base_model import BaseModel
-import paho.mqtt.client as mqtt
 import json
 import logging
 import time
-
-from app.config import BROKER_ADDRESS, DETECTION_TOPIC, IMAGE_TOPIC
-
 
 
 detection_logger = logging.getLogger("detection-logger")
@@ -29,9 +25,6 @@ class ObjectDetector(BaseModel):
                     base_options=self.base_options, detection_options=self.detection_options)
                 self.detector = vision.ObjectDetector.create_from_options(self.options)
 
-                self.mqtt_client = mqtt.Client("ObjectDetectorPublisher")
-                self.mqtt_client.connect(BROKER_ADDRESS)
-
             except Exception as e:
                 print(f"Error initializing the object detector: {e}")
                 raise
@@ -39,7 +32,7 @@ class ObjectDetector(BaseModel):
     def handle_detections(self, payload, frame):
         """Handles the detected objects by publishing to MQTT and saving images."""
 
-        self.mqtt_client.publish(topic=DETECTION_TOPIC, payload=payload.encode('utf-8'))
+        self.mqtt_client.publish_message(topic=self.mqtt_client.pub_topics['detection'], message=payload.encode('utf-8'))
         detection_logger.info(payload)
 
         # Test method to see how sending picutres functiosn
@@ -80,7 +73,7 @@ class ObjectDetector(BaseModel):
             if payload[i]['label'] == "person" and ObjectDetector.image_count < 2:
                 print('sending image to be saved on app')
                 _, jpeg_cropped = cv2.imencode('.jpg', frame)
-                self.mqtt_client.publish(IMAGE_TOPIC, jpeg_cropped.tobytes())
+                self.mqtt_client.publish_message(topic=self.mqtt_client.pub_topics['image'], message=jpeg_cropped.tobytes())
                 ObjectDetector.image_count += 1
 
 
