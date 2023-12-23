@@ -1,4 +1,3 @@
-import json
 
 class Payload:
     def __init__(self, entry, event, label, confidence, xmin, ymin, xmax, ymax, filename, timestamp):
@@ -31,13 +30,4 @@ class Payload:
             "timestamp": self.timestamp
         }
 
-# Usage Example
-my_payloads = []
-my_payloads.append(Payload("log", "detection", "label", 0.9, 10, 20, 30, 40, "image.jpg", "2023-12-04"))
 
-# Convert list of Payload objects to list of dicts
-payload_dicts = [p.to_dict() for p in my_payloads]
-
-# Serialize to JSON
-payload_json = json.dumps(payload_dicts)
-print(payload_json)

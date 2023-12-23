@@ -28,7 +28,8 @@ class CameraHandler:
         if self.cap:
             success, frame = self.cap.read()
             if success:
-                return frame
+
+                return cv2.resize(frame, self.dim)
             else:
                 print("Failed to read frame from camera.")
         return None

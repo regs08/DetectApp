@@ -42,12 +42,11 @@ class MQTTClient:
         image_path = self.config.image_path
         try:
             # Read and encode the image
-            image = cv2.imread(image_path)
+            image = cv2.resize(cv2.imread(image_path), 200, 200)
             if image is None:
                 raise FileNotFoundError(f"Unable to read the image at {image_path}")
 
             _, jpeg_image = cv2.imencode('.jpeg', image)
-            jpeg_image = cv2.resize(jpeg_image, (480, 640))
             self.client.publish(self.pub_topics['test_image'], jpeg_image.tobytes())
             print(f"Image published to topic {self.pub_topics['test_image']}")
         except FileNotFoundError as e:
