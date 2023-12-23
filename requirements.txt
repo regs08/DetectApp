@@ -7,3 +7,4 @@ protobuf>=3.18.0,<4
 Flask==2.2.5
 paho-mqtt==1.6.1
 Pillow==9.5
+gunicorn

@@ -3,8 +3,10 @@ from tflite_support.task import processor
 import supervision as sv
 from tensorflow_lite_support.python.task.processor.proto import bounding_box_pb2
 from datetime import datetime
-import json
-from Payload.payload import Payload
+from ClassModels.payload import Payload
+from PIL import Image
+import io
+
 
 def bbox_to_numpy_xyxy(bbox: bounding_box_pb2.BoundingBox):
     # Access the bounding box values from the BoundingBox object
@@ -64,11 +66,9 @@ def extract_payload(bboxes, labels, confs, conf_thresh):
 
             payload.append(data)
     if payload:
-        print(payload)
         payload_dicts =[p.to_dict() for p in payload]
-        payload_json = json.dumps(payload_dicts)
 
-        return payload_json
+        return payload_dicts
     return None
 
 
@@ -100,5 +100,23 @@ def process_detection_results(image, detection_result: processor.DetectionResult
     return payload, annotated_frame
 
 
+def get_annotated_frame(image, detection_result: processor.DetectionResult):
+    bboxes, labels, confs = extract_detection_data(detection_result)
+    annotated_frame = annotate_frame(image=image, bboxes=bboxes, labels=labels, confs=confs)
+    return annotated_frame
+
+
 def extract_classification_data():
     pass
+
+def resize_and_compress_image(image_data, max_size=(800, 600), quality=85):
+    # Open the image from the byte data
+    image = Image.open(io.BytesIO(image_data))
+
+    # Resize the image
+    image.thumbnail(max_size, Image.ANTIALIAS)
+
+    # Save the image to a byte stream with JPEG format
+    output = io.BytesIO()
+    image.save(output, format='JPEG', quality=quality)
+    return output.getvalue()

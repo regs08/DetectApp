@@ -5,14 +5,16 @@
 echo -e "Starting system update and upgrade..."
 sudo apt-get update && sudo apt-get upgrade -y || { echo "Update or upgrade failed"; exit 1; }
 
+
+
+echo -e "Installing libraries and dependencies..."
+sudo apt-get install -y libatlas-base-dev libopenblas-dev || { echo "Library installation failed"; exit 1; }
+
 echo -e "Installing MQTT..."
 sudo apt-get install -y mosquitto mosquitto-clients || { echo "MQTT installation failed"; exit 1; }
 # Enable and start MQTT service
 sudo systemctl enable mosquitto.service
 sudo systemctl start mosquitto.service
-
-echo -e "Installing libraries and dependencies..."
-sudo apt-get install -y libatlas-base-dev libopenblas-dev || { echo "Library installation failed"; exit 1; }
 
 # Instructions for modifying MQTT configuration
 echo -e "Modify the MQTT configuration file:"

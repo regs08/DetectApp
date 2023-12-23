@@ -1,0 +1,5 @@
+from DefaultClassModels.default_mqtt_client import default_mqtt_client
+from ClassHandlers.payload_sender_handler import PayloadSenderHandler
+
+
+default_payload_sender_handler = PayloadSenderHandler(default_mqtt_client)

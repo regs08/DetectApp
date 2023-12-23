@@ -1,10 +1,11 @@
 import cv2
 import paho.mqtt.client as mqtt
-from MqttClient.mqtt_config import MqttConfig
+from ClassModels.Configs.mqtt_config import MqttConfig
+from threading import Thread
 
 class MQTTClient:
 
-    def __init__(self, config: MqttConfig = MqttConfig()):
+    def __init__(self, config: MqttConfig):
 
         self.config = config
         self.client = mqtt.Client()
@@ -13,6 +14,10 @@ class MQTTClient:
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.client.connect(self.config.broker_address)
+        self.thread = Thread(target=self.start_loop)
+
+    def start_mqtt_client_thread(self):
+        self.thread.start()
 
     def on_connect(self, client, userdata, flags, rc):
         print(f"Connected with result code {rc}")
@@ -22,14 +27,15 @@ class MQTTClient:
 
     def on_message(self, client, userdata, msg):
         print(f"Received message on {msg.topic}")
-        print(f"Payload: {msg.payload.decode('utf-8')}")
+        #print(f"Payload: {msg.payload.decode('utf-8')}")
 
         # Check if the topic is 'ping'
-        if msg.topic == "test/ping" and msg.payload.decode('utf-8') == "ping":
+        if msg.topic == self.sub_topics['test_ping'] and msg.payload.decode('utf-8') == "ping":
 
             print("Ping received, sending Pong...")
             self.publish_message(self.pub_topics['pong'], "pong")
-        if msg.topic == "test/ping" and msg.payload.decode('utf-8') == "image":
+
+        if msg.topic == self.sub_topics['test_image'] and msg.payload.decode('utf-8') == "image":
             self.publish_test_image()
 
     def publish_test_image(self):
@@ -40,14 +46,14 @@ class MQTTClient:
             if image is None:
                 raise FileNotFoundError(f"Unable to read the image at {image_path}")
 
-            _, jpeg_image = cv2.imencode('.jpg', image)
+            _, jpeg_image = cv2.imencode('.jpeg', image)
+            jpeg_image = cv2.resize(jpeg_image, (480, 640))
             self.client.publish(self.pub_topics['test_image'], jpeg_image.tobytes())
             print(f"Image published to topic {self.pub_topics['test_image']}")
         except FileNotFoundError as e:
             print(f"Error: {e}")
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
-
 
     def publish_message(self, topic, message):
         self.client.publish(topic, message, retain=False)
