@@ -1,0 +1,6 @@
+from ClassHandlers.camera_handler import CameraHandler
+from DefaultClassModels.Configs.default_camera_config_physical import default_camera_config_physical, default_camera_config_stream
+
+camera_handler_from_physical = CameraHandler(config=default_camera_config_physical)
+camera_handler_from_stream = CameraHandler(config=default_camera_config_stream)
+

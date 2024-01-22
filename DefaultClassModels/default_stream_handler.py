@@ -1,0 +1,7 @@
+from ClassHandlers.stream_handler import StreamHandler
+from DefaultClassModels.default_camera_handler import camera_handler_from_physical, camera_handler_from_stream
+
+
+stream_handler_from_physical = StreamHandler(camera_handler_from_physical)
+stream_handler_from_stream = StreamHandler(camera_handler_from_stream)
+
