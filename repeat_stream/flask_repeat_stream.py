@@ -11,6 +11,7 @@ video_filename = "pinot_noir_six_sec.mp4"
 
 video_path = os.path.join(video_dir, video_filename)
 
+
 def generate_video(video_path):
     while True:  # Loop the video file indefinitely
         cap = cv2.VideoCapture(video_path)
