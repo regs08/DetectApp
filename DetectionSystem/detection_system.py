@@ -5,7 +5,6 @@ from ClassHandlers.camera_handler import CameraHandler
 from ClassModels.Configs.detection_system_config import DetectionSystemConfig
 from MqttClient.my_mqtt_client import MQTTClient
 from model_logic.detector import ObjectDetector
-import time
 from threading import Thread, Lock
 from queue import Queue
 
