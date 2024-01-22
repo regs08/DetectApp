@@ -46,7 +46,7 @@ class MQTTClient:
             if image is None:
                 raise FileNotFoundError(f"Unable to read the image at {image_path}")
 
-            _, jpeg_image = cv2.imencode('.jpeg', image)
+            _, jpeg_image = cv2.imencode('.jpg', image)
             self.client.publish(self.pub_topics['test_image'], jpeg_image.tobytes())
             print(f"Image published to topic {self.pub_topics['test_image']}")
         except FileNotFoundError as e:
