@@ -3,7 +3,7 @@ from DefaultClassModels.Topics.default_topics import sub_topics, pub_topics
 import os
 
 
-default_image_path = os.path.join(os.getcwd(), "test_image.jpeg")
+default_image_path = os.path.join(os.getcwd(), "test_image.jpg")
 
 default_mqtt_config = MqttConfig(broker_address="localhost",
                                  sub_topics=sub_topics,
