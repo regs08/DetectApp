@@ -1,15 +1,16 @@
-from flask import Flask, Response
+from flask import Flask, Response, render_template
 from DefaultClassModels.Configs.default_detection_system_config import default_detection_system_config
 from DetectionSystem.detection_system import DetectionSystem
 
 app = Flask(__name__)
 
-# Global variable for detection system
-
 detection_system = DetectionSystem(default_detection_system_config)
 detection_system.create_system()
 detection_system.start_all_threads()
 
+@app.route('/')
+def index():
+    return render_template('index.html')  # Assuming 'index.html' in your templates directory
 
 @app.route('/video')
 def video():
