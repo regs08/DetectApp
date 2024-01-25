@@ -27,7 +27,6 @@ class MQTTClient:
 
     def on_message(self, client, userdata, msg):
         print(f"Received message on {msg.topic}")
-        #print(f"Payload: {msg.payload.decode('utf-8')}")
 
         # Check if the topic is 'ping'
         if msg.topic == self.sub_topics['test_ping'] and msg.payload.decode('utf-8') == "ping":
@@ -42,7 +41,7 @@ class MQTTClient:
         image_path = self.config.image_path
         try:
             # Read and encode the image
-            image = cv2.resize(cv2.imread(image_path), (200, 200))
+            image = cv2.resize(cv2.imread(image_path), (480, 480))
             if image is None:
                 raise FileNotFoundError(f"Unable to read the image at {image_path}")
 

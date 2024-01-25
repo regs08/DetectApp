@@ -1,6 +1,10 @@
 class CameraConfig:
-    def __init__(self, camera_id, width, height):
-        self.camera_id = camera_id
+    def __init__(self, camera_src, width, height):
+        """
+
+        :rtype: object
+        """
+        self.camera_src = camera_src
         self.width = width
         self.height = height
 

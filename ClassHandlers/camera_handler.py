@@ -7,7 +7,7 @@ Wrapper class for cv2 camera's interface designed to be passed into a ML model c
 
 class CameraHandler:
     def __init__(self, config:CameraConfig):
-        self.camera_id = config.camera_id
+        self.camera_src = config.camera_src
         self.width = config.width
         self.height = config.height
         self.dim = (self.width, self.height)
@@ -16,9 +16,9 @@ class CameraHandler:
 
     def open_camera(self):
         """Open the camera for capturing."""
-        self.cap = cv2.VideoCapture(self.camera_id)
+        self.cap = cv2.VideoCapture(self.camera_src)
         if not self.cap.isOpened():
-            print(f"Failed to open camera with ID {self.camera_id}")
+            print(f"Failed to open camera with ID {self.camera_src}")
         else:
             self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
             self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
