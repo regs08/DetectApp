@@ -7,6 +7,7 @@ Main script for the app. current default state is getting stream friom the webca
 to change to a stream change the detection system config 
 """
 
+#todo look into running with
 
 app = Flask(__name__)
 

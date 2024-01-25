@@ -1,7 +1,9 @@
 from DefaultClassModels.Configs.default_mqtt_config import default_mqtt_config
 from DefaultClassModels.Configs.grape_model_config import grape_model_config
-from DefaultClassModels.Configs.default_camera_config_physical import default_camera_config_stream, \
+from DefaultClassModels.Configs.default_camera_config_physical import \
     default_camera_config_physical
+from DefaultClassModels.Configs.default_camera_config_stream import default_camera_config_stream
+
 from ClassModels.Configs.detection_system_config import DetectionSystemConfig
 
 

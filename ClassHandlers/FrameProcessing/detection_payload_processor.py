@@ -61,7 +61,6 @@ class DetectionPayloadProcessor(ProcessFrame):
                 payload.append(data)
         if payload:
             payload_dicts = [p.to_dict() for p in payload]
-
             return payload_dicts
         return None
 
