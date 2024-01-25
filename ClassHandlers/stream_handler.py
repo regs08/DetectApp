@@ -1,7 +1,7 @@
 from threading import Event, Lock, Thread
 from queue import Queue
 from ClassHandlers.camera_handler import CameraHandler
-
+import time
 import cv2
 
 
@@ -20,25 +20,37 @@ class StreamHandler:
         self.stream_thread = None
 
     def run_stream(self):
-        """Run the detection and store frames in a queue."""
+        """Run the stream and store frames in a queue with error handling."""
         self.running = True
         self.camera_handler.open_camera()
-        try:
-            while self.running:
-                frame = self.camera_handler.read_frame()
 
-                if frame is None:
-                    break
-                # Store the frame in the queue
-                with self.frame_queue_lock:
-                    if self.frame_queue.full():
-                        self.frame_queue.get()  # Remove the oldest frame if the queue is full
-                    self.frame_queue.put(frame)
-                self.new_frame_event.set()
+        while self.running:
+            # Check if the stream/camera is open; try to reopen if it's not
+            if not self.camera_handler.cap.isOpened():
+                print("Stream disconnected, attempting to reconnect.")
+                try:
+                    self.camera_handler.open_camera()
+                except ConnectionError as e:
+                    print(f"Reconnection failed: {e}")
+                    time.sleep(2)  # Wait for 2 seconds before retrying
+                    continue
 
-        # When everything done, close the camera
-        finally:
-            self.camera_handler.close_camera()
+            frame = self.camera_handler.read_frame()
+            if frame is None:
+                print("Frame read failed, skipping frame.")
+                time.sleep(0.1)  # Brief pause before attempting next frame
+                continue
+
+            # Store the frame in the queue
+            with self.frame_queue_lock:
+                if self.frame_queue.full():
+                    self.frame_queue.get()  # Remove the oldest frame if the queue is full
+                self.frame_queue.put(frame)
+
+            self.new_frame_event.set()
+
+        # When the stream is stopped, ensure the camera is closed
+        self.camera_handler.close_camera()
 
     def start_stream_thread(self):
         """Starts the detection in a separate thread."""
