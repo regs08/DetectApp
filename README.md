@@ -1,0 +1,3 @@
+This is an ongoing project with a focus on computer vision and precisionn agricultre. The purpose of the app is to send detection results to an observer client. At its current state it can support tflite models, efficient det and and ssd model, and perform object detection. With the use of MQTT it sends text updates and photos of detections in real time. With the use of FLask and Gunicorn it can stream the detections to a server. 
+
+Future plans will be expanding to more model support, both more vision models as well as auditory, integrating virtural servers (Colab, Azure etc..), and giving the user of the client more control of the configurations, e.g model selction, confidence threshold.. 
