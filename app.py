@@ -2,6 +2,12 @@ from flask import Flask, Response, render_template
 from DefaultClassModels.Configs.default_detection_system_config import default_detection_system_config
 from DetectionSystem.detection_system import DetectionSystem
 
+"""
+Main script for the app. current default state is getting stream friom the webcam (for cv2 purposed camera index=0) 
+to change to a stream change the detection system config 
+"""
+
+
 app = Flask(__name__)
 
 detection_system = DetectionSystem(default_detection_system_config)
