@@ -64,7 +64,6 @@ class StreamHandler:
         if self.stream_thread:
             self.stream_thread.join()
 
-
     @staticmethod
     def encode_frame(frame):
         """Encode the frame into JPEG format."""
