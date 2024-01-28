@@ -2,6 +2,8 @@ import cv2
 from ClassModels.Configs.camera_config import CameraConfig
 """
 Wrapper class for cv2 camera's interface designed to be passed into a ML model class
+With the wrapped class we can use different camera's and their inputs more ambiguously e.g camera handler getting 
+input from a stream, and a camera handler getting input directly from a webcam. 
 """
 
 
