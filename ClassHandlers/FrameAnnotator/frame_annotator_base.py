@@ -5,7 +5,7 @@ from ClassModels.ResultClasses.results_base import ResultsBase
 
 
 class FrameAnnotatorBase(ABC):
-    def __init__(self, results: ResultsBase, fps_utility: FPSUtility):
+    def __init__(self, results: ResultsBase, fps_utility=FPSUtility()):
         """
         Initialize the FrameAnnotator with a FPSUtility instance.
 

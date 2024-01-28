@@ -5,17 +5,17 @@ import supervision as sv
 
 
 class FrameAnnotatorDetections(FrameAnnotatorBase):
-    def __int__(self, results: TFLiteResults, fps_utility):
-        super().__init__(results, fps_utility)
+    def __init__(self, results: TFLiteResults):
+        super().__init__(results)
 
     def annotate_frame(self, frame):
         self.calculate_and_show_fps(frame)
 
         # Checking for detections
         if len(self.results.boxes) > 0:
-            bboxes = np.array(self.results.boxes)
+            np_bboxes = np.array(self.results.boxes)
 
-            detections = sv.Detections(xyxy=np.array(self.results.boxes),
+            detections = sv.Detections(xyxy=np.array(np_bboxes),
                                        confidence=np.array(self.results.confs))
 
             # Annotating Frame
