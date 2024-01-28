@@ -1,24 +1,31 @@
 import unittest
 import numpy as np
 import cv2
-from ClassHandlers.FrameProcessing.detections_frame_annotator import DetectionsFrameAnnotator
-
+from ClassHandlers.FrameAnnotator.frame_annotator_detections import FrameAnnotatorDetections
+from ClassModels.ResultClasses.tf_lite_results import TFLiteResults
 
 class TestBaseFrameAnnotator(unittest.TestCase):
     def test_annotate_frame(self):
         # Setup
-        annotator = DetectionsFrameAnnotator()
+        import numpy as np
+
+        bboxes = [[50, 50, 200, 200], [300, 300, 450, 450]]  # Original list of bounding boxes
+        bboxes_np = [np.array(bbox) for bbox in bboxes]  # Convert each bbox to a NumPy array
+
+        # bboxes_np is now a list of NumPy arrays
+        labels = ['label1', 'label2']
+        confs = [0.9, 0.75]
+
+        results = TFLiteResults(boxes=bboxes_np, labels=labels, confs=confs)
+        annotator = FrameAnnotatorDetections(results)
 
         # Create a black image (e.g., 640x480)
         image = np.zeros((480, 640, 3), dtype=np.uint8)
 
         # Define some random boxes, labels, and confidences
-        bboxes = [[50, 50, 200, 200], [300, 300, 450, 450]]  # Example: [[xmin, ymin, xmax, ymax], ...]
-        labels = ['label1', 'label2']
-        confs = [0.9, 0.75]
 
         # Annotate the frame
-        annotated_image = annotator.annotate_frame(image, bboxes, labels, confs)
+        annotated_image = annotator.annotate_frame(frame=image)
 
         # Save the annotated image for visual inspection
         cv2.imwrite('annotated_test_image.jpg', annotated_image)
