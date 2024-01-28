@@ -1,9 +1,10 @@
 from ClassHandlers.PayloadProcessing.payload_processor_base import PayloadProcessorBase
 from ClassModels.ResultClasses.tf_lite_results import TFLiteResults
 from ClassModels.payload import Payload
-
+from ClassHandlers.PayloadProcessing.payload_filter_tfod import PayloadFilterTFOD
 from typing import Optional, List, Union
 from datetime import datetime
+
 
 class PayloadProcessorTFOD(PayloadProcessorBase):
     """
@@ -37,13 +38,13 @@ class PayloadProcessorTFOD(PayloadProcessorBase):
         - results (TFLiteResults): The object detection results to process.
 
         Returns:
-        - List[dict] or None: A list of dictionaries representing the processed payloads
+        - List[dict] or None: A list of Payloads representing the processed payloads
           for each detection, or None if no payloads were generated.
         """
         payloads_from_detection = []
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         for i, conf in enumerate(results.confs):
-            if conf > self.conf_thresh:
+            if self.filter_payload:
                 filename = f"{results.labels[i]}_{timestamp}.jpg"
 
                 xmin, ymin, xmax, ymax = [int(coord) for coord in results.boxes[i]]
@@ -67,3 +68,14 @@ class PayloadProcessorTFOD(PayloadProcessorBase):
             #payload_dicts = [p.to_dict() for p in payloads_from_detection]
             return payloads_from_detection
         return None
+
+    #todo find a better place for filter logic
+    def filter_payload(self, results):
+        """
+        For now the method is just doing basic filterimg. desinged to povide more sophisticated filtering in the future
+        :param results: TFliteResults class
+        :return: true or false whether to add the payload
+        """
+
+        payload_filter = PayloadFilterTFOD(results)
+        return payload_filter.filter_by_conf(self.conf_thresh)
