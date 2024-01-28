@@ -5,25 +5,23 @@ from ClassModels.ResultClasses.results_base import ResultsBase
 
 
 class FrameAnnotatorBase(ABC):
-    def __init__(self, results: ResultsBase, fps_utility=FPSUtility()):
+    def __init__(self, fps_utility=FPSUtility()):
         """
         Initialize the FrameAnnotator with a FPSUtility instance.
 
         :param fps_utility: An instance of FPSUtility to calculate and display frames per second.
         """
-        if not isinstance(results, ResultsBase):
-            raise TypeError("reults not of ResultsBase!")
 
         self.fps_utility = fps_utility
-        self.results = results
 
     @abstractmethod
-    def annotate_frame(self, frame):
+    def annotate_frame(self,results: ResultsBase, frame):
         """
         Abstract method to annotate a frame.
         This method must be implemented by subclasses of FrameAnnotator.
 
         :param frame: The frame to be annotated.
+        :param results: results obtained from a model
         """
         pass
 
