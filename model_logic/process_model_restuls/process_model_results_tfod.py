@@ -1,10 +1,15 @@
-from model_logic.extract_model_restuls.extract_model_results_base import ExtractModelResultsBase
+from model_logic.process_model_restuls.process_model_results_base import ProcessModelResultsBase
 from ClassModels.ResultClasses.tf_lite_results import TFLiteResults
-from tensorflow_lite_support.cc.task.processor.proto import detections_pb2, bounding_box_pb2
+import tensorflow_lite_support
+from tensorflow_lite_support.cc.task.processor.proto import bounding_box_pb2
 import numpy as np
 
+"""
+tfod: tensor flow object detection 
+"""
 
-class ExtractModelResultsTFOD(ExtractModelResultsBase):
+
+class ProcessModelResultsTFOD(ProcessModelResultsBase):
     def extract_results(self, results) -> TFLiteResults:
         """
         Extracts the results from TensorFlow Lite object detection model output.
@@ -12,7 +17,7 @@ class ExtractModelResultsTFOD(ExtractModelResultsBase):
         :param results: A DetectionResult object obtained from TensorFlow Lite's detection model.
         :return: TFLiteResults object containing extracted boxes, labels, and confidence scores.
         """
-        if not isinstance(results, detections_pb2.DetectionResult):
+        if not isinstance(results, tensorflow_lite_support.python.task.processor.proto.detections_pb2.DetectionResult):
             raise TypeError("Results must be of type detections_pb2.DetectionsResult")
 
         bboxes = []  # List to store bounding boxes

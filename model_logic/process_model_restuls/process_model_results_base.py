@@ -2,7 +2,7 @@ from ClassModels.ResultClasses.results_base import ResultsBase
 from abc import ABC, abstractmethod
 
 
-class ExtractModelResultsBase(ABC):
+class ProcessModelResultsBase(ABC):
 
     @abstractmethod
     def extract_results(self, results) -> ResultsBase:
