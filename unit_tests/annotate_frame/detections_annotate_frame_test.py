@@ -1,8 +1,8 @@
 import unittest
-import numpy as np
 import cv2
 from ClassHandlers.FrameAnnotator.frame_annotator_detections import FrameAnnotatorDetections
 from ClassModels.ResultClasses.tf_lite_results import TFLiteResults
+
 
 class TestBaseFrameAnnotator(unittest.TestCase):
     def test_annotate_frame(self):

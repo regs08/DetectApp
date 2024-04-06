@@ -1,4 +1,4 @@
-from MqttClient.MqttTopics import MqttTopics
+from ClassModels.MqttTopics import MqttTopics
 
 class MqttConfig:
     """

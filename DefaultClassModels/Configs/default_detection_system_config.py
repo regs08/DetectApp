@@ -8,5 +8,5 @@ from ClassModels.Configs.detection_system_config import DetectionSystemConfig
 
 
 default_detection_system_config = DetectionSystemConfig(model_config=grape_model_config,
-                                                        camera_config=default_camera_config_physical,
+                                                        camera_config=default_camera_config_stream,
                                                         mqtt_config=default_mqtt_config)

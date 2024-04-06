@@ -42,7 +42,7 @@ class PayloadProcessorTFOD(PayloadProcessorBase):
           for each detection, or None if no payloads were generated.
         """
         payloads_from_detection = []
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        timestamp = datetime.now().isoformat()
         for i, conf in enumerate(results.confs):
             if self.filter_payload:
                 filename = f"{results.labels[i]}_{timestamp}.jpg"

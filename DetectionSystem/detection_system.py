@@ -85,7 +85,9 @@ class DetectionSystem:
 
                     # Send frame and payload at specified intervals
                     if annotated_frame.any():
-                        self.payload_sender_handler.append_frame(encoded_frame)
+                        # todo put sending images on hold for now
+                        pass
+                         #self.payload_sender_handler.append_frame(encoded_frame)
                     if payload:
                         self.payload_sender_handler.append_payload(payload)
 

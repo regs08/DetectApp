@@ -94,7 +94,8 @@ class PayloadSenderHandler:
         with self.buffer_lock:
             if self.frame_buffer:
                 frame = self.frame_buffer.pop(0)
-                self.mqtt_client.publish_message(topic=self.mqtt_client.pub_topics['image'], message=frame)
+                # todo put sending frames on hold
+                #self.mqtt_client.publish_message(topic=self.mqtt_client.pub_topics['image'], message=frame)
 
     def should_send_payload(self, current_time):
         """
@@ -153,7 +154,6 @@ class PayloadSenderHandler:
                     self.send_payload()
                     self.update_last_send_time(current_time)
                 if self.should_send_frame(current_time):
-                    print('sending frame.. ')
                     self.send_picture()
                     self.update_last_frame_send_time(current_time)
                     self.frame_buffer = []
